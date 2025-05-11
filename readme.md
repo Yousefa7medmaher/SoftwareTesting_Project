@@ -22,7 +22,6 @@ This Ecommerce project is designed to be a fully functional online store where u
 
 The goal of this project is to:
 - Build a full-stack Ecommerce website with both frontend and backend.
-- Simulate a payment process.
 - Implement automation testing using Selenium with Java for testing the website.
 
 ## Frontend Features
@@ -83,7 +82,7 @@ The backend is built using PHP (Vanilla) and provides the following API endpoint
 
 ## Database Schema
 
-The SQL database (`database.sql`) contains tables for the following entities:
+The SQL database (`BackEnd\database.sql`) contains tables for the following entities:
 
 - **Users**: Stores user information such as username, email, and password.
 - **Products**: Stores product details like name, description, price, and stock.
@@ -94,125 +93,45 @@ The SQL database (`database.sql`) contains tables for the following entities:
 - **Reviews**: Allows users to review products.
 - **Payments**: Simulates the payment data.
 
-Here is the SQL script for creating the database schema:
+## Automation Testing
 
-```sql
--- Create the database
-CREATE DATABASE IF NOT EXISTS ecommerce_122;
-USE ecommerce_122;
+The project includes automation testing implemented using Selenium with Java. The test cases cover:
+- User registration and login functionality
+- Product search and filtering
+- Cart management (adding/removing items)
+- Checkout process simulation
+- Basic UI element verification
 
--- Create users table
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') DEFAULT 'user',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+## Installation
 
--- Create categories table
-CREATE TABLE IF NOT EXISTS categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+1. Clone the repository
+2. Import the database schema from `database.sql`
+3. Configure the database connection in `config.php`
+4. Set up a local PHP server (e.g., XAMPP, WAMP, or MAMP)
+5. For testing: Set up Java environment and configure Selenium
 
--- Create products table
-CREATE TABLE IF NOT EXISTS products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    category_id INT NOT NULL,
-    image_products VARCHAR(255),
-    stock INT NOT NULL DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
-);
+## Usage
 
--- Create orders table
-CREATE TABLE IF NOT EXISTS orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    total_amount DECIMAL(10, 2) NOT NULL,
-    status ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
-    shipping_address TEXT NOT NULL,
-    payment_method VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
+1. Access the application through your local server
+2. Register as a new user or use existing credentials
+3. Browse products, add them to cart, and proceed to checkout
+4. For admin features, access the admin panel (if implemented)
 
--- Create order_items table
-CREATE TABLE IF NOT EXISTS order_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
-);
+## Contributing
 
--- Create cart table
-CREATE TABLE IF NOT EXISTS cart (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_user_product (user_id, product_id)
-);
+Contributions to this project include:
+- Implementation of test cases for various features
+- Work on sprints and project milestones
+- Integration with Zephyr tools in Jira for test case management
+- Bug fixes and feature enhancements
 
--- Create wishlist table
-CREATE TABLE IF NOT EXISTS wishlist (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_user_product (user_id, product_id)
-);
+To contribute:
+1. Fork the repository
+2. Create a new branch for your feature/bugfix
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
--- Create reviews table
-CREATE TABLE IF NOT EXISTS reviews (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
-    comment TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
-);
+## License
 
--- Create admin user
-INSERT INTO users (name, email, password, role) VALUES
-('Admin', 'admin@example.com', '$2y$10$8K1p/a0dL1LXMIZoIqPK6.1MkzX5UZ5UZ5UZ5UZ5UZ5UZ5UZ5UZ', 'admin'); 
-
--- Create payments table
-CREATE TABLE payments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    order_id INT NOT NULL,
-    full_name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    address TEXT NOT NULL,
-    city VARCHAR(100) NOT NULL,
-    state VARCHAR(100) NOT NULL,
-    zip_code VARCHAR(20) NOT NULL,
-    card_name VARCHAR(100) NOT NULL,
-    card_number VARCHAR(16) NOT NULL,
-    exp_month INT NOT NULL,
-    exp_year INT NOT NULL,
-    cvv VARCHAR(4) NOT NULL,
-    payment_status ENUM('pending', 'completed', 'failed') NOT NULL DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
-);
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
