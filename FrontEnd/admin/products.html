@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage products in the admin panel">
+    <title>Admin - Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/alerts.css">
+    <style>
+        /* Additional styles for products page */
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .add-product-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-color);
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .add-product-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--secondary-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--secondary-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .products-table th,
+        .products-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .products-table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+        }
+
+        .products-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn.edit {
+            color: var(--warning-color);
+        }
+
+        .action-btn.delete {
+            color: var(--error-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            background: var(--secondary-bg);
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--text-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--primary-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: var(--text-muted);
+            color: var(--text-color);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: #fff;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <a href="dashboard.html">Admin Panel</a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i class="bx bx-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="products.html">
+                            <i class="bx bx-package"></i>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="categories.html">
+                            <i class="bx bx-category"></i>
+                            <span>Categories</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="orders.html">
+                            <i class="bx bx-cart"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.html">
+                            <i class="bx bx-user"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="logoutBtn">
+                            <i class="bx bx-log-out"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h1>Products Management</h1>
+                </div>
+                <div class="admin-profile">
+                    <span id="adminName">Admin</span>
+                    <i class="bx bx-user-circle"></i>
+                </div>
+            </header>
+
+            <div class="products-header">
+                <button class="add-product-btn" id="addProductBtn">
+                    <i class="bx bx-plus"></i>
+                    Add New Product
+                </button>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
+            </div>
+
+            <div class="table-responsive">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody">
+                        <tr>
+                            <td colspan="6">
+                                <div class="loading">
+                                    <i class="bx bx-loader-alt bx-spin"></i>
+                                    <p>Loading products...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Add New Product</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Category</label>
+                    <select id="productCategory" class="form-control" required>
+                        <option value="">Select a category</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Price</label>
+                    <input type="number" id="productPrice" class="form-control" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="productStock">Stock</label>
+                    <input type="number" id="productStock" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="productImage">Image URL</label>
+                    <input type="text" id="productImage" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/admin/products.js"></script>
+    <script src="../js/alerts.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html> 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard for E-commerce">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/alerts.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <a href="dashboard.html">Admin Panel</a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="dashboard.html">
+                            <i class="bx bx-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="products.html">
+                            <i class="bx bx-package"></i>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="categories.html">
+                            <i class="bx bx-category"></i>
+                            <span>Categories</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="orders.html">
+                            <i class="bx bx-cart"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.html">
+                            <i class="bx bx-user"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="logoutBtn">
+                            <i class="bx bx-log-out"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="admin-header">
+                <div class="header-title">
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="admin-profile">
+                    <span id="adminName">Admin</span>
+                    <i class="bx bx-user-circle"></i>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bx bx-package"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Products</h3>
+                            <p id="totalProducts">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bx bx-category"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Categories</h3>
+                            <p id="totalCategories">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bx bx-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Orders</h3>
+                            <p id="totalOrders">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bx bx-user"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Users</h3>
+                            <p id="totalUsers">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <div class="activity-list" id="activityList">
+                        <div class="loading">
+                            <i class="bx bx-loader-alt bx-spin"></i>
+                            <p>Loading activity...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/admin/dashboard.js"></script>
+    <script src="../js/alerts.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html> 
