@@ -41,7 +41,7 @@
                 <strong>Total:</strong>
                 <span class="amount" id="totalPrice">$0.00</span>
             </div>
-            <a href="payment.php" id="checkoutButton">Proceed to Checkout</a>
+            <a href="#" id="checkoutButton">Proceed to Checkout</a>
         </section>
     </main>
 
@@ -84,6 +84,16 @@
             }
             
             fetchCartItems();
+
+            // Set up checkout button event listener
+            document.getElementById('checkoutButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                const totalPrice = document.getElementById('totalPrice').textContent;
+                // Store total price in localStorage for payment page
+                localStorage.setItem('cartTotal', totalPrice.replace('$', ''));
+                // Navigate to payment page
+                window.location.href = 'payment.html';
+            });
         });
 
         function fetchCartItems() {
@@ -208,6 +218,9 @@
             cartItemsContainer.innerHTML = cartHTML;
             document.getElementById('totalPrice').textContent = `$${cartItems.total_price.toFixed(2)}`;
             cartSummary.style.display = 'block';
+            
+            // Store total price in localStorage for payment page access
+            localStorage.setItem('cartTotal', cartItems.total_price.toFixed(2));
         }
 
         function removeFromCart(cartItemId) {
