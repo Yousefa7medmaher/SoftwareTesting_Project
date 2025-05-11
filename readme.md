@@ -2,6 +2,11 @@
 
 This is a full-stack Ecommerce application built using PHP (Vanilla) for the backend and HTML, CSS, JavaScript for the frontend. The project includes basic features such as product listings, product search and filtering by category, cart management, and a simple emulated payment process. Additionally, it demonstrates the implementation of automation testing using Selenium with Java.
 
+Team Members:
+Marwanosmaa
+
+Fasy Milad
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
