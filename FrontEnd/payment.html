@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+            outline: none; border: none;
+            text-transform: capitalize;
+            transition: all .2s linear;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo a {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: linear-gradient(135deg, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-list a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-list a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #fff, #ccc);
+            transition: width 0.3s;
+        }
+
+        .nav-list a:hover::after,
+        .nav-list a.active::after {
+            width: 100%;
+        }
+
+        /* Payment Form Styles */
+        .payment-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            flex: 1;
+        }
+
+        .payment-container form {
+            padding: 20px;
+            width: 700px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-container form .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .payment-container form .row .col {
+            flex: 1 1 250px;
+        }
+
+        .payment-container form .row .col .title {
+            font-size: 20px;
+            color: #fff;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .payment-container form .row .col .inputBox {
+            margin: 15px 0;
+        }
+
+        .payment-container form .row .col .inputBox span {
+            margin-bottom: 10px;
+            display: block;
+            color: #fff;
+        }
+
+        .payment-container form .row .col .inputBox input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            font-size: 15px;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .payment-container form .row .col .inputBox input:focus {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .payment-container form .row .col .flex {
+            display: flex;
+            gap: 15px;
+        }
+
+        .payment-container form .submit-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 17px;
+            background: linear-gradient(135deg, #fff, #ccc);
+            color: #000;
+            margin-top: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .payment-container form .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Order Summary Styles */
+        .order-summary {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-summary h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .order-summary .total-amount {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .order-summary .total-amount strong {
+            font-weight: 600;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #ccc;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .payment-container form {
+                width: 100%;
+            }
+
+            .nav-list {
+                gap: 1rem;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-list {
+                display: none;
+            }
+
+            .payment-container form .row .col {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-container">
+        <div class="logo"><a href="index.html">E-Shop</a></div>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="product.html">Products</a></li>
+                <li><a href="Cart.html"><i class="bx bx-shopping-bag"></i> Cart</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="payment-container">
+    <form action="http://localhost/Ecommerce/BackEnd/api/payment/payment.php" method="POST" id="paymentForm">
+        <!-- New: Order Summary Section -->
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div class="total-amount">
+                <strong>Total Amount:</strong>
+                <span id="cartTotalDisplay">$0.00</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h3 class="title">Billing Address</h3>
+                <div class="inputBox">
+                    <span>Full Name:</span>
+                    <input type="text" name="full_name" placeholder="محمد أحمد" required>
+                </div>
+                <div class="inputBox">
+                    <span>Email:</span>
+                    <input type="email" name="email" placeholder="example@example.com" required>
+                </div>
+                <div class="inputBox">
+                    <span>Address:</span>
+                    <input type="text" name="address" placeholder="شارع - مدينة - حي" required>
+                </div>
+                <div class="inputBox">
+                    <span>City:</span>
+                    <input type="text" name="city" placeholder="القاهرة" required>
+                </div>
+                <div class="flex">
+                    <div class="inputBox">
+                        <span>Governorate:</span>
+                        <input type="text" name="state" placeholder="مصر" required>
+                    </div>
+                    <div class="inputBox">
+                        <span>Postal Code:</span>
+                        <input type="text" name="zip_code" placeholder="123456" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <h3 class="title">Payment</h3>
+                <div class="inputBox">
+                    <span>Cards Accepted:</span>
+                    <img src="images/card_img.png" alt="Card Types">
+                </div>
+                <div class="inputBox">
+                    <span>Name on Card:</span>
+                    <input type="text" name="card_name" placeholder="محمد أحمد" required>
+                </div>
+                <div class="inputBox">
+                    <span>Credit Card Number:</span>
+                    <input type="text" name="card_number" placeholder="1111-2222-3333-4444" required maxlength="19" oninput="formatCardNumber(this)">
+                </div>
+                <div class="flex">
+                    <div class="inputBox">
+                        <span>Exp Month:</span>
+                        <input type="number" name="exp_month" placeholder="12" required min="1" max="12">
+                    </div>
+                    <div class="inputBox">
+                        <span>Exp Year:</span>
+                        <input type="number" name="exp_year" placeholder="2025" required min="2025">
+                    </div>
+                </div>
+                <div class="inputBox">
+                    <span>CVV:</span>
+                    <input type="password" name="cvv" placeholder="123" required maxlength="4">
+                </div>
+                <!-- Hidden field to store total amount -->
+                <input type="hidden" name="total_amount" id="totalAmountField" value="0.00">
+                <input type="submit" value="Proceed to Payment" class="submit-btn">
+            </div>
+        </div>
+    </form>
+</div>
+
+<footer class="footer">
+    <div class="container footer-container">
+        <div class="footer-info">
+            <p>&copy; 2025 E-Shop. All rights reserved.</p>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="bx bxl-facebook"></i></a>
+            <a href="#"><i class="bx bxl-twitter"></i></a>
+            <a href="#"><i class="bx bxl-linkedin"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get total from localStorage
+        const cartTotal = localStorage.getItem('cartTotal') || '0.00';
+        
+        // Display the total in the summary
+        document.getElementById('cartTotalDisplay').textContent = `$${cartTotal}`;
+        
+        // Set the value in the hidden field for form submission
+        document.getElementById('totalAmountField').value = cartTotal;
+        
+        // Check if cart is empty
+        if (cartTotal === '0.00' || cartTotal === '0') {
+            alert('Your cart is empty! Please add items to your cart before checkout.');
+            window.location.href = 'product.html';
+        }
+        
+        // Handle form submission
+        document.getElementById('paymentForm').addEventListener('submit', function(event) {
+            // You can add validation here if needed
+            // For example, validate card number format, etc.
+            
+            // If user is not logged in, prevent form submission
+            const userData = JSON.parse(localStorage.getItem('user') || '{}');
+            if (!userData.id) {
+                event.preventDefault();
+                alert('Please login to complete your purchase.');
+                window.location.href = 'login.html';
+            }
+        });
+    });
+    
+    // Function to format card number with spaces (for better readability)
+    function formatCardNumber(input) {
+        // Remove any non-digit characters
+        let value = input.value.replace(/\D/g, '');
+        
+        // Add a space after every 4 digits
+        value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        
+        // Update the input value
+        input.value = value;
+    }
+</script>
+
+</body>
+</html>
