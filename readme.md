@@ -4,8 +4,9 @@ This is a full-stack Ecommerce application built using PHP (Vanilla) for the bac
 
 # Team Members
 
-- **Marwanosmaa**
-- **Fasy Milad**
+- **Yousef Ahmed Maher **
+- **Marwan osmaa**
+- **Fady Milad**
 
 ## Table of Contents
 
