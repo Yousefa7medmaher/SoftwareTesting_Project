@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore exclusive deals on the latest tech, fashion, and more with our top-rated e-commerce platform.">
+    <meta name="author" content="E-Commerce Pro Team">
+    <title>E-Commerce Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        :root {
+            --dark-color: #1a1a1a;
+            --darker-color: #121212;
+            --light-color: #ffffff;
+            --gray-color: #888888;
+            --primary-color: #4CAF50;
+            --secondary-color:rgb(3, 7, 3);
+            --accent-color: #66bb6a;
+            --error-color: #f44336;
+            --success-color: #4CAF50;
+            --border-color: #333333;
+            --card-bg: #242424;
+            --hover-color: #2c2c2c;
+        }
+
+        body {
+            background-color: var(--darker-color);
+            color: var(--light-color);
+        }
+
+        /* Navbar Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--dark-color);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo a {
+            color: var(--light-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-list a {
+            color: var(--light-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-list a:hover {
+            color: var(--primary-color);
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* Slideshow Styles */
+        .slideshow {
+            margin-top: 80px;
+            background-color: var(--dark-color);
+        }
+
+        .slide {
+            background-color: var(--dark-color);
+        }
+
+        .slide-content {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .slide-content h1 {
+            color: var(--light-color);
+        }
+
+        .slide-content p {
+            color: var(--gray-color);
+        }
+
+        .btn-btn-primary {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Featured Products Section */
+        .featured-products {
+            padding: 4rem 0;
+            background-color: var(--darker-color);
+        }
+
+        .featured-products h2 {
+            color: var(--light-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+
+        .product {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            color: var(--light-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-info p {
+            color: var(--gray-color);
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .btn-learn-more {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-learn-more:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: var(--dark-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .footer p {
+            color: var(--gray-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            color: var(--light-color);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--dark-color);
+                padding: 2rem;
+                transition: 0.3s ease-in-out;
+                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav.active {
+                right: 0;
+            }
+
+            .nav-list {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .nav-list a {
+                display: block;
+                padding: 0.5rem 0;
+            }
+
+            .close-btn {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: none;
+                border: none;
+                color: var(--light-color);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+        }
+
+        /* Hide close button in desktop view */
+        .close-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo"><a href="index.html">E-Shop</a></div>
+            <button class="menu-btn" aria-label="Open menu">
+                <i class='bx bx-menu'></i>
+            </button>
+            <nav class="nav">
+                <button class="close-btn" aria-label="Close menu">
+                    <i class='bx bx-x'></i>
+                </button>
+                <ul class="nav-list">
+                    <li><a href="product.html">Products</a></li>
+                    <li><a href="Cart.html"><i class="bx bx-shopping-bag"></i> Cart</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="slideshow" style="margin-top: 80px;">
+        <div class="slideshow-container">
+            <div class="slide fade active" style="background-image: url('images/slide ph1.jpg');">
+                <div class="slide-content">
+                    <h1>Exclusive Deals</h1>
+                    <p>Shop the best products at unbeatable prices.</p>
+                    <a href="product.html" class="btn-btn-primary">Start Shopping</a>
+                </div>
+            </div>
+            <div class="slide fade" style="background-image: url('images/slide ph3.jpg');">
+                <div class="slide-content">
+                    <h1>Upgrade Your Life</h1>
+                    <p>Latest gadgets, exclusive discounts, endless choices.</p>
+                    <a href="product.html" class="btn-btn-primary">Shop Now</a>
+                </div>
+            </div>
+            <div class="slide fade" style="background-image: url('images/slide ph2.jpg');">
+                <div class="slide-content">
+                    <h1>Style Meets Savings</h1>
+                    <p>Discover the latest in fashion and accessories.</p>
+                    <a href="product.html" class="btn-btn-primary">Explore Fashion</a>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
+            <span class="next" onclick="changeSlide(1)">&#10095;</span>
+        </div>
+    </section>
+
+    <main class="container">
+        <section id="products" class="featured-products">
+            <h2>Featured Products</h2>
+            <div class="products-grid">
+                <div class="product">
+                    <div class="product-image">
+                        <img src="images/iphone15.jpg" alt="Iphone 15 Pro Max">
+                    </div>
+                    <div class="product-info">
+                        <h3>Iphone 15 Pro Max</h3>
+                        <p>Experience the ultimate in smartphone technology.</p>
+                        <div class="price">$1100</div>
+                        <a href="product.html" class="btn-learn-more">Learn More</a>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="images/handbag.jpg" alt="Tommy Handbag">
+                    </div>
+                    <div class="product-info">
+                        <h3>Tommy Handbag</h3>
+                        <p>Style and practicality combined in one handbag.</p>
+                        <div class="price">$150</div>
+                        <a href="product.html" class="btn-learn-more">Learn More</a>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="images/laptop.jpg" alt="Lenovo IdeaPad">
+                    </div>
+                    <div class="product-info">
+                        <h3>Lenovo IdeaPad</h3>
+                        <p>High-performance laptop for work and play.</p>
+                        <div class="price">$600</div>
+                        <a href="product.html" class="btn-learn-more">Learn More</a>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="images/playstation5.png" alt="PlayStation 5">
+                    </div>
+                    <div class="product-info">
+                        <h3>PlayStation 5</h3>
+                        <p>Immerse yourself in the future of gaming.</p>
+                        <div class="price">$700</div>
+                        <a href="product.html" class="btn-learn-more">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <p>&copy; 2024 Elite E-Commerce Platform. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+                    <i class="bx bxl-facebook"></i>
+                </a>
+                <a href="https://www.twitter.com" target="_blank" aria-label="Twitter">
+                    <i class="bx bxl-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+                    <i class="bx bxl-instagram"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function changeSlide(direction) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(() => changeSlide(1), 6000);
+
+        // Mobile Menu Functionality
+        const menuBtn = document.querySelector('.menu-btn');
+        const closeBtn = document.querySelector('.close-btn');
+        const nav = document.querySelector('.nav');
+        const navLinks = document.querySelectorAll('.nav-list a');
+
+        // Open menu
+        menuBtn.addEventListener('click', () => {
+            nav.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        });
+
+        // Close menu
+        closeBtn.addEventListener('click', () => {
+            nav.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+
+        // Close menu when clicking on a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !menuBtn.contains(e.target) && nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
