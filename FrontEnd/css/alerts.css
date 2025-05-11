@@ -1,0 +1,131 @@
+/* Custom Alert Styles */
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 400px;
+    min-width: 300px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    transform: translateX(120%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.custom-alert.show {
+    transform: translateX(0);
+}
+
+.custom-alert .icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.custom-alert .content {
+    flex-grow: 1;
+}
+
+.custom-alert .title {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.custom-alert .message {
+    font-size: 0.9em;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+.custom-alert .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    opacity: 0.5;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    transition: opacity 0.3s;
+    flex-shrink: 0;
+}
+
+.custom-alert .close-btn:hover {
+    opacity: 1;
+}
+
+/* Alert Types */
+.custom-alert.success {
+    border-left: 4px solid #2ecc71;
+}
+
+.custom-alert.success .icon {
+    color: #2ecc71;
+}
+
+.custom-alert.error {
+    border-left: 4px solid #e74c3c;
+}
+
+.custom-alert.error .icon {
+    color: #e74c3c;
+}
+
+.custom-alert.warning {
+    border-left: 4px solid #f1c40f;
+}
+
+.custom-alert.warning .icon {
+    color: #f1c40f;
+}
+
+.custom-alert.info {
+    border-left: 4px solid #3498db;
+}
+
+.custom-alert.info .icon {
+    color: #3498db;
+}
+
+/* Alert Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(120%);
+    }
+}
+
+/* Stacked Alerts */
+.custom-alert + .custom-alert {
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .custom-alert {
+        top: auto;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        min-width: auto;
+        max-width: none;
+    }
+} 
