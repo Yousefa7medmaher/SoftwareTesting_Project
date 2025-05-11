@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View and manage items in your shopping cart">
+    <title>Your Shopping Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/alerts.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo"><a href="index.html">E-Shop</a></div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="product.html">Products</a></li>
+                    <li><a href="Cart.html" class="active"><i class="bx bx-shopping-bag"></i> Cart</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">Your Shopping Cart</h1>
+        
+        <section class="cart-items" id="cartItems">
+            <!-- Cart items will be loaded here dynamically -->
+            <div class="loading">
+                <i class="bx bx-loader-alt bx-spin"></i>
+                <p>Loading your cart...</p>
+            </div>
+        </section>
+        
+        <section class="cart-summary" id="cartSummary" style="display: none;">
+            <div class="total">
+                <strong>Total:</strong>
+                <span class="amount" id="totalPrice">$0.00</span>
+            </div>
+            <a href="payment.php" id="checkoutButton">Proceed to Checkout</a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <p>&copy; 2024 Elite E-Commerce Platform. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+                    <i class="bx bxl-facebook"></i>
+                </a>
+                <a href="https://www.twitter.com" target="_blank" aria-label="Twitter">
+                    <i class="bx bxl-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+                    <i class="bx bxl-instagram"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const userData = JSON.parse(localStorage.getItem('user') || '{}');
+            const userToken = localStorage.getItem('userToken');
+            
+            console.log('User data:', userData);
+            console.log('User token:', userToken);
+            
+            if (!userData.id) {
+                document.getElementById('cartItems').innerHTML = `
+                    <div class="error-message">
+                        <i class="bx bx-error-circle"></i>
+                        <p>Please login to view your cart.</p>
+                        <a href="login.html" class="btn">Login Now</a>
+                    </div>
+                `;
+                customAlert.warning('Please login to view your cart', 'Authentication Required');
+                return;
+            }
+            
+            fetchCartItems();
+        });
+
+        function fetchCartItems() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartSummary = document.getElementById('cartSummary');
+            
+            console.log('Fetching cart items...');
+            
+            // Show loading state
+            cartItemsContainer.innerHTML = `
+                <div class="loading">
+                    <i class="bx bx-loader-alt bx-spin"></i>
+                    <p>Loading your cart...</p>
+                </div>
+            `;
+            
+            // Get user data from localStorage
+            const userData = JSON.parse(localStorage.getItem('user') || '{}');
+            const userToken = localStorage.getItem('userToken');
+            
+            console.log('Cart fetch - User data:', userData);
+            console.log('Cart fetch - User token:', userToken);
+            
+            // Set up headers
+            const headers = { 'Content-Type': 'application/json' };
+            
+            // Add token to headers if available
+            if (userToken) {
+                headers['Authorization'] = userToken;
+            }
+            
+            console.log('Cart fetch - Request headers:', headers);
+            
+            // Create request options
+            const requestOptions = {
+                method: 'GET',
+                headers: headers,
+                credentials: 'include' // Include cookies for session support
+            };
+            
+            // Add user_id to URL as a fallback
+            const url = `http://localhost/Ecommerce/BackEnd/api/cart/getCart.php?user_id=${userData.id}`;
+            
+            console.log('Fetching cart with URL:', url);
+            console.log('Request options:', requestOptions);
+            
+            fetch(url, requestOptions)
+                .then(response => {
+                    console.log('Cart fetch response status:', response.status);
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            console.error('Cart fetch error response:', data);
+                            throw new Error(data.error || `HTTP error! Status: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Cart items received:', data);
+                    displayCartItems(data);
+                    customAlert.success('Cart loaded successfully');
+                })
+                .catch(error => {
+                    console.error('Error fetching cart items:', error);
+                    cartItemsContainer.innerHTML = `
+                        <div class="error-message">
+                            <i class="bx bx-error-circle"></i>
+                            <p>There was an error loading your cart. Please try again later.</p>
+                            <p class="error-details">${error.message}</p>
+                            <button onclick="retryFetch()" class="btn">Retry</button>
+                        </div>
+                    `;
+                    customAlert.error('Failed to load cart items', error.message);
+                });
+        }
+        
+        function retryFetch() {
+            // Clear localStorage and redirect to login
+            localStorage.removeItem('user');
+            localStorage.removeItem('userToken');
+            customAlert.info('Redirecting to login page...', 'Session Expired');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        }
+
+        function displayCartItems(cartItems) {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartSummary = document.getElementById('cartSummary');
+            
+            if (!cartItems || !cartItems.cart_items || cartItems.cart_items.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="no-products">
+                        <i class="bx bx-cart"></i>
+                        <p>Your cart is empty.</p>
+                        <a href="product.html" class="btn">Continue Shopping</a>
+                    </div>
+                `;
+                cartSummary.style.display = 'none';
+                customAlert.info('Your cart is empty', 'No Items');
+                return;
+            }
+            
+            let cartHTML = '';
+            
+            cartItems.cart_items.forEach(item => {
+                cartHTML += `
+                    <div class="cart-item" data-id="${item.cart_id}">
+                        <img src="${item.image_products}" alt="${item.name}" class="cart-item-img">
+                        <div class="cart-item-details">
+                            <h3>${item.name}</h3>
+                            <div class="price">$${item.price} × ${item.quantity}</div>
+                            <div class="subtotal">Subtotal: $${item.subtotal}</div>
+                            <button onclick="removeFromCart(${item.cart_id})">
+                                <i class="bx bx-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartItemsContainer.innerHTML = cartHTML;
+            document.getElementById('totalPrice').textContent = `$${cartItems.total_price.toFixed(2)}`;
+            cartSummary.style.display = 'block';
+        }
+
+        function removeFromCart(cartItemId) {
+            console.log('Removing item from cart:', cartItemId);
+            const button = event.target.closest('button');
+            const originalText = button.innerHTML;
+            
+            // Show loading state
+            button.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Removing...';
+            button.disabled = true;
+            
+            // Get user data from localStorage
+            const userData = JSON.parse(localStorage.getItem('user') || '{}');
+            const userToken = localStorage.getItem('userToken');
+            
+            console.log('Remove from cart - User data:', userData);
+            console.log('Remove from cart - User token:', userToken);
+            
+            // Set up headers
+            const headers = { 'Content-Type': 'application/json' };
+            
+            // Add token to headers if available
+            if (userToken) {
+                headers['Authorization'] = userToken;
+            }
+            
+            console.log('Remove from cart - Request headers:', headers);
+            
+            // Create request options
+            const requestOptions = {
+                method: 'POST',
+                headers: headers,
+                credentials: 'include', // Include cookies for session support
+                body: JSON.stringify({ 
+                    cart_id: cartItemId,
+                    user_id: userData.id
+                })
+            };
+            
+            console.log('Remove from cart - Request options:', requestOptions);
+            
+            fetch('http://localhost/Ecommerce/BackEnd/api/cart/removeFromCart.php', requestOptions)
+            .then(response => {
+                console.log('Remove from cart response status:', response.status);
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        console.error('Remove from cart error response:', data);
+                        throw new Error(data.error || `HTTP error! Status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Remove from cart response:', data);
+                if (data.success) {
+                    // Show success message
+                    customAlert.success('Item removed from cart');
+                    button.innerHTML = '<i class="bx bx-check"></i> Removed!';
+                    button.classList.add('success');
+                    
+                    // Remove the item from the DOM
+                    const cartItem = document.querySelector(`.cart-item[data-id="${cartItemId}"]`);
+                    cartItem.style.opacity = '0';
+                    cartItem.style.transform = 'translateX(20px)';
+                    
+                    setTimeout(() => {
+                        cartItem.remove();
+                        fetchCartItems(); // Refresh the cart to update totals
+                    }, 300);
+                } else if (data.error) {
+                    console.error('Error removing item:', data.error);
+                    // Show error message
+                    customAlert.error('Failed to remove item', data.error);
+                    button.innerHTML = '<i class="bx bx-x"></i> Error';
+                    button.classList.add('error');
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.classList.remove('error');
+                        button.disabled = false;
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error removing item from cart:', error);
+                
+                // Show error message
+                customAlert.error('Error removing item', error.message);
+                button.innerHTML = '<i class="bx bx-x"></i> Error';
+                button.classList.add('error');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('error');
+                    button.disabled = false;
+                }, 2000);
+            });
+        }
+    </script>
+    <script src="js/alerts.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
