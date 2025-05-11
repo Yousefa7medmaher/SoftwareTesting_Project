@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore our wide range of products, from electronics to clothing and home essentials.">
+    <title>Our Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/product.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo"><a href="index.html">E-Shop</a></div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="product.html" class="active">Products</a></li>
+                    <li><a href="Cart.html"><i class="bx bx-shopping-bag"></i> Cart</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="filters">
+            <div class="filter-group">
+                <label for="categoryFilter">Filter by Category:</label>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <!-- Categories will be loaded dynamically -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="searchBar">Search Products:</label>
+                <input type="text" id="searchBar" placeholder="Search products..." />
+            </div>
+        </section>
+
+        <section class="products" id="products">
+            <!-- Products will be loaded here dynamically -->
+            <div class="loading">
+                <i class="bx bx-loader-alt bx-spin"></i>
+                <p>Loading products...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <p>&copy; 2024 Elite E-Commerce Platform. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+                    <i class="bx bxl-facebook"></i>
+                </a>
+                <a href="https://www.twitter.com" target="_blank" aria-label="Twitter">
+                    <i class="bx bxl-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+                    <i class="bx bxl-instagram"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/product.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
