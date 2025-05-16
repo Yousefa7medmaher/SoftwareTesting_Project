@@ -138,6 +138,30 @@ To contribute:
 4. Push to the branch
 5. Create a Pull Request
 
+## Automation Testing
+
+The project includes automation testing implemented using **Selenium with Java**.
+
+### Main.java
+All test scenarios are initiated from the `Main.java` file, located in the `TestingAutomation/src/` directory.
+
+This file is responsible for:
+- Launching the Selenium WebDriver (ChromeDriver)
+- Navigating through key pages of the Ecommerce site (login, register, home, cart)
+- Executing test flows such as:
+  - User registration
+  - User login
+  - Product search and filtering
+  - Adding items to the cart
+  - Verifying items in the cart
+  - Simulated checkout flow
+- Closing the browser session after tests complete
+
+> ✅ You must configure the correct path to your `chromedriver` in `Main.java` before running the tests.
+
+The test scenarios are written in Java, and follow a modular structure, allowing easy expansion to add more test cases.
+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
